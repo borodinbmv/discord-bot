@@ -56,4 +56,6 @@ async def leaderboard(ctx):
 
     await ctx.send(msg)
 
+print("🚀 Запускаю bot.run()")
 bot.run(TOKEN)
+
