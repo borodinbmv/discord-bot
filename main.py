@@ -36,6 +36,25 @@ def get_leaderboard(board_type):
     return []
 
 
+def format_leaderboard(title, players):
+    if not players:
+        return f"{title}\n(нет данных)\n"
+
+    max_nick_len = max(len(p["nick_name"]) for p in players)
+    max_points_len = max(len(str(p["points"])) for p in players)
+
+    lines = [title]
+    for i, p in enumerate(players, 1):
+        nick = p["nick_name"]
+        points = str(p["points"])
+
+        lines.append(
+            f"{i:>2}. {nick:<{max_nick_len}}  {points:<{max_points_len}}"
+        )
+
+    return "```\n" + "\n".join(lines) + "\n```"
+
+
 @bot.event
 async def on_ready():
     print(f"✅ Бот запущен как {bot.user}")
@@ -46,16 +65,11 @@ async def leaderboard(ctx):
     high = get_leaderboard("high-4hr")[:10]
     low = get_leaderboard("low-4hr")[:15]
 
-    msg = "**🏆 High leaderboard (TOP 10)**\n"
-    for i, p in enumerate(high, 1):
-        msg += f"{i}. {p['nick_name']} — {p['points']}\n"
-
-    msg += "\n**🥈 Low leaderboard (TOP 15)**\n"
-    for i, p in enumerate(low, 1):
-        msg += f"{i}. {p['nick_name']} — {p['points']}\n"
+    msg = ""
+    msg += format_leaderboard("🏆 High leaderboard (TOP 10)", high)
+    msg += "\n"
+    msg += format_leaderboard("🥈 Low leaderboard (TOP 15)", low)
 
     await ctx.send(msg)
 
-print("🚀 Запускаю bot.run()")
 bot.run(TOKEN)
-
