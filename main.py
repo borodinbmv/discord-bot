@@ -1,5 +1,5 @@
-import discord
-from discord.ext import commands
+import disnake
+from disnake.ext import commands
 import requests
 from datetime import datetime
 import os
@@ -73,3 +73,4 @@ async def leaderboard(ctx):
     await ctx.send(msg)
 
 bot.run(TOKEN)
+
